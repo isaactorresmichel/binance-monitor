@@ -1,0 +1,39 @@
+{
+  "name": "binance-monitor",
+  "version": "1.0.0",
+  "description": "Binance transactions monitor",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node ./bin/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isaactorresmichel/binance-monitor.git"
+  },
+  "author": "Isaac Torres Michel <isaactorresmichel@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/isaactorresmichel/binance-monitor/issues"
+  },
+  "homepage": "https://github.com/isaactorresmichel/binance-monitor#readme",
+  "bin": {
+    "binance-monitor": "./bin/index.js"
+  },
+  "dependencies": {
+    "@types/node": "^12.7.2",
+    "axios": "^0.19.0",
+    "chalk": "^2.4.2",
+    "dotenv": "^8.1.0",
+    "node-notifier": "^5.4.3",
+    "rxjs": "^6.5.2",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3",
+    "yargs": "^14.0.0"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/node-notifier": "^5.4.0",
+    "@types/yargs": "^13.0.2"
+  }
+}
