@@ -5,7 +5,7 @@ import { Observable, timer, from } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
 import yargs, { Argv } from 'yargs';
 import axios, { AxiosResponse } from 'axios';
-import {notify, Notification} from 'node-notifier';
+import { notify, Notification } from 'node-notifier';
 
 const BASE_ENDPOINT = 'https://api.binance.com';
 
@@ -29,7 +29,7 @@ function getSignedQueryString(query: ParsedUrlQueryInput): string {
 }
 
 
-function getOpenOrders(symbol: string, recvWindow: number = 15000): Observable<any> {
+function getOpenOrders(symbol: string, recvWindow: number = 5000): Observable<any> {
   const baseUrl = getEndPointUrl('/api/v3/openOrders');
 
   const queryParams = {
@@ -45,6 +45,16 @@ function getOpenOrders(symbol: string, recvWindow: number = 15000): Observable<a
       'X-MBX-APIKEY': process.env.API
     }
   });
+
+  return from(request);
+}
+
+function getPrice(symbol: string): Observable<any> {
+  const baseUrl = getEndPointUrl('/api/v3/ticker/price');
+
+  const path = `${baseUrl}?${querystring.stringify({ symbol })}`;
+
+  const request: Promise<AxiosResponse<any>> = axios.get(path);
 
   return from(request);
 }
@@ -73,6 +83,20 @@ export function run() {
               message: 'No hay transacciones programadas.'
             } as Notification);
           }
+        }, (error: any) => {
+          console.log(error);
+        });
+
+
+      timer(0, 20000)
+        .pipe(
+          tap(() => console.log(chalk.green("Iniciando petición de precio..."))),
+          mergeMap(() => getPrice('BTCUSDT')))
+        .subscribe((response: any) => {
+          notify({
+            title: 'Precio actual',
+            message: `El precio actual de BTCUSDT es ${response.data.price}.`
+          } as Notification);
         }, (error: any) => {
           console.log(error);
         });
